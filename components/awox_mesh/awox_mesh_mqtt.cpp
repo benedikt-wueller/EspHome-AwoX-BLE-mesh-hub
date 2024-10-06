@@ -605,7 +605,7 @@ void AwoxMeshMqtt::process_incomming_command(MeshDestination *mesh_destination, 
     mesh_destination->state = true;
     mesh_destination->sequence_mode = false;
     mesh_destination->candle_mode = false;
-    #if (root["effect"] == "color loop") {
+    //if (root["effect"] == "color loop") {
     //  mesh_destination->sequence_mode = true;
     //  this->mesh_->set_sequence(dest, 0);
     //} else if (root["effect"] == "candle") {
