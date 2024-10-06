@@ -166,16 +166,16 @@ void AwoxMeshMqtt::publish_state(MeshDestination *mesh_destination) {
             root["brightness"] = convert_value_to_available_range(mesh_destination->white_brightness, 1, 0x7f, 0, 255);
           }
 
-          if (mesh_destination->candle_mode) {
-            root["effect"] = "candle";
-          } else if (mesh_destination->sequence_mode) {
-            root["effect"] = "color loop";
-          }
+          //if (mesh_destination->candle_mode) {
+          //  root["effect"] = "candle";
+          //} else if (mesh_destination->sequence_mode) {
+          //  root["effect"] = "color loop";
+          //}
 
           // https://developers.home-assistant.io/docs/core/entity/light#color-mode-when-rendering-effects
-          if (mesh_destination->candle_mode || mesh_destination->sequence_mode) {
-            root["color_mode"] = "brightness";
-          }
+          //if (mesh_destination->candle_mode || mesh_destination->sequence_mode) {
+          //  root["color_mode"] = "brightness";
+          //}
 
           JsonObject color = root.createNestedObject("color");
           color["r"] = mesh_destination->R;
@@ -363,8 +363,8 @@ void AwoxMeshMqtt::send_discovery(Device *device) {
 
           root["effect"] = true;
           JsonArray effect_list = root.createNestedArray(MQTT_EFFECT_LIST);
-          effect_list.add("candle");
-          effect_list.add("color loop");
+          //effect_list.add("candle");
+          //effect_list.add("color loop");
           effect_list.add("stop");
         }
 
@@ -487,8 +487,8 @@ void AwoxMeshMqtt::send_group_discovery(Group *group) {
 
           root["effect"] = true;
           JsonArray effect_list = root.createNestedArray(MQTT_EFFECT_LIST);
-          effect_list.add("candle");
-          effect_list.add("color loop");
+          //effect_list.add("candle");
+          //effect_list.add("color loop");
           effect_list.add("stop");
         }
 
@@ -605,19 +605,19 @@ void AwoxMeshMqtt::process_incomming_command(MeshDestination *mesh_destination, 
     mesh_destination->state = true;
     mesh_destination->sequence_mode = false;
     mesh_destination->candle_mode = false;
-    if (root["effect"] == "color loop") {
-      mesh_destination->sequence_mode = true;
-      this->mesh_->set_sequence(dest, 0);
-    } else if (root["effect"] == "candle") {
-      mesh_destination->candle_mode = true;
-      this->mesh_->set_candle_mode(dest);
-    } else {
+    #if (root["effect"] == "color loop") {
+    //  mesh_destination->sequence_mode = true;
+    //  this->mesh_->set_sequence(dest, 0);
+    //} else if (root["effect"] == "candle") {
+    //  mesh_destination->candle_mode = true;
+    //  this->mesh_->set_candle_mode(dest);
+    //} else {
       if (mesh_destination->color_mode) {
         this->mesh_->set_color(dest, mesh_destination->R, mesh_destination->G, mesh_destination->B);
       } else {
         this->mesh_->set_white_temperature(dest, mesh_destination->temperature);
       }
-    }
+    //}
   }
 
   if (root.containsKey("state")) {
